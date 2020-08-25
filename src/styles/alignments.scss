@@ -1,0 +1,36 @@
+$directions: (
+  "row": row,
+  "col": column,
+);
+$justifys: (
+  "fs": flex-start,
+  "fe": flex-end,
+  "c": center,
+  "sb": space-between,
+  "sa": space-around,
+  "se": space-evenly,
+);
+$aligns: (
+  "fs": flex-start,
+  "fe": flex-end,
+  "c": center,
+  "s": stretch,
+  "b": baseline,
+);
+
+@each $direction-name, $direction in $directions {
+  .flx-#{$direction-name} {
+    display: flex;
+    flex-direction: $direction;
+  }
+}
+@each $justify-name, $justify in $justifys {
+  .jc-#{$justify-name} {
+    justify-content: $justify;
+  }
+}
+@each $align-name, $align in $aligns {
+  .ai-#{$align-name} {
+    align-items: $align;
+  }
+}

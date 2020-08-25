@@ -1,0 +1,23 @@
+@import "_sizings";
+
+.introduction {
+  @media screen and (max-width: $max-screen-width) {
+    flex-direction: column;
+  }
+
+  .headshot {
+    width: 400px;
+
+    @media screen and (max-width: $max-screen-width) {
+      width: 80vw;
+    }
+  }
+
+  .introduction-text {
+    max-width: 400px;
+
+    @media screen and (max-width: $max-screen-width) {
+      margin-top: 50px;
+    }
+  }
+}

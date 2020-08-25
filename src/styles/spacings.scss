@@ -1,0 +1,25 @@
+@import "_spacings";
+
+@each $spacing-type-name, $spacing-type in $spacing-types {
+  @each $spacing-name, $spacing in $spacings {
+    .#{$spacing-type-name}-#{$spacing-name} {
+      #{$spacing-type}: $spacing;
+    }
+
+    .#{$spacing-type-name}h-#{$spacing-name} {
+      #{$spacing-type}-right: $spacing;
+      #{$spacing-type}-left: $spacing;
+    }
+
+    .#{$spacing-type-name}v-#{$spacing-name} {
+      #{$spacing-type}-top: $spacing;
+      #{$spacing-type}-bottom: $spacing;
+    }
+
+    @each $spacing-direction-name, $spacing-direction in $spacing-directions {
+      .#{$spacing-type-name}#{$spacing-direction-name}-#{$spacing-name} {
+        #{$spacing-type}-#{$spacing-direction}: $spacing;
+      }
+    }
+  }
+}
