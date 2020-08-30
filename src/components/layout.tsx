@@ -7,7 +7,7 @@ import Footer from "./footer"
 import "../styles/layout.scss"
 
 Layout.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   navOptions: PropTypes.node,
 }
 interface Props extends React.ComponentProps<any> {
@@ -16,25 +16,12 @@ interface Props extends React.ComponentProps<any> {
 }
 
 function Layout({ children, navOptions = null }: Props) {
-  // useEffect(() => {
-  //   let cov = document.getElementById("load-cover")
-  //   if (cov) cov.className += " visible"
-  // }, [])
-
   return (
     <>
-      {/* <div id="load-cover" className="hidden" /> */}
       <Header navOptions={navOptions} />
-      {/* <div
-        style={{
-          margin: `0 auto`,
-          width: "90%",
-        }}
-      > */}
       <main id="main" className="main-container">
         {children}
       </main>
-      {/* </div> */}
       <Footer />
     </>
   )

@@ -8,7 +8,7 @@ import { Icons } from "../types"
 import "../styles/header.scss"
 
 interface Props {
-  navOptions: JSX.Element | null
+  navOptions?: JSX.Element | null
 }
 
 Header.propTypes = {
@@ -116,4 +116,4 @@ function Header({ navOptions }: Props) {
   )
 }
 
-export default Header
+export default typeof window !== "undefined" ? Header : () => null

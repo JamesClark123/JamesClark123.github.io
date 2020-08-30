@@ -120,4 +120,4 @@ function Footer() {
   )
 }
 
-export default Footer
+export default typeof window !== "undefined" ? Footer : () => null

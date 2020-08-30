@@ -161,4 +161,4 @@ function ExperienceTable({ experience, ...props }: Props) {
   )
 }
 
-export default ExperienceTable
+export default typeof window !== "undefined" ? ExperienceTable : () => null
