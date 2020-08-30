@@ -1,8 +1,0 @@
-@import "_sizings";
-
-.xp-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, $large-sizing);
-  row-gap: 30px;
-  column-gap: 30px;
-}
