@@ -16,13 +16,13 @@
 .designed-by {
   font-weight: lighter;
   color: white;
-  opacity: 70%;
+  opacity: 0.7;
   font-size: 13px;
   text-decoration: none;
   transition: 800ms;
 
   &:hover {
     color: $primary;
-    opacity: 100%;
+    opacity: 1;
   }
 }
