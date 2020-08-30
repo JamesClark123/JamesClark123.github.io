@@ -28,11 +28,18 @@
     font-weight: lighter;
     color: $secondary;
     text-align: left;
+    margin: 0px 0 40px 0;
 
     @media only screen and (max-width: $max-screen-width) {
       font-size: 12vw;
       margin-bottom: 20px;
     }
+  }
+
+  .introduction-paragraph {
+    font-size: 18px;
+    line-height: 30px;
+    font-weight: lighter;
   }
 }
 

@@ -36,7 +36,10 @@ function Footer() {
   }
 
   function getBottomOfPage() {
-    return document.getElementById("main")?.clientHeight || Infinity
+    return (
+      (document.getElementById("main")?.clientHeight || Infinity) +
+      (document.getElementById("footer")?.clientHeight || Infinity)
+    )
   }
 
   function getBottomCutOff() {
@@ -95,27 +98,32 @@ function Footer() {
     return !state.onScreen
       ? "-30px"
       : state.bottom
-      ? "20px"
+      ? "40px"
       : `${totalOffset}px`
   }
 
   return (
-    <footer className="footer">
-      {icons.map((icon, i) => (
-        <Icon
-          key={i}
-          icon={icon.icon}
-          target="_self"
-          link={icon.link}
-          size="medium"
-          hoverType="primary"
-          style={{
-            left: calcLeft(i),
-            bottom: calcBottom(i),
-          }}
-          iconClasses={classNames("footer-icon")}
-        />
-      ))}
+    <footer id="footer" className="flx-col jc-fe ai-c pb-s">
+      <div className="footer">
+        {icons.map((icon, i) => (
+          <Icon
+            key={i}
+            icon={icon.icon}
+            target="_self"
+            link={icon.link}
+            size="medium"
+            hoverType="primary"
+            style={{
+              left: calcLeft(i),
+              bottom: calcBottom(i),
+            }}
+            iconClasses={classNames("footer-icon")}
+          />
+        ))}
+      </div>
+      <a href="https://www.cindychendesigns.com/" className="designed-by">
+        Website designed by Cindy Chen Designs
+      </a>
     </footer>
   )
 }

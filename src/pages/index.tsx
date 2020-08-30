@@ -19,10 +19,13 @@ function IndexPage() {
     return (
       <div className="introduction-text">
         <h1 className="introduction-header">Hi! I'm James.</h1>
-        <p>
-          I am a software engineer living in the San Francisco Bay Area. I enjoy
-          fullstack and frontend development and am knowledgable in React and
-          Typescript.
+        <p className="introduction-paragraph">
+          I am a software engineer living in the San Francisco Bay Area. I
+          specialize in full-stack and front-end development and am
+          knowledgeable in React and Typescript. I spent the last year working
+          on intricate problems at a 3D printing company, where I worked on user
+          interface, back-end, and geometry code. I’m open to front-end or
+          full-stack positions either in the Bay Area or remote.
         </p>
       </div>
     )
@@ -65,8 +68,8 @@ function IndexPage() {
       <FullPage id="contact" className="flx-col jc-c ai-c contact-page">
         <h1 className="contact">HIRE ME</h1>
         <p className="contact-p">
-          I'm currently on the job hunt and you're always welcome to reach out
-          to me! Shoot me an email and I'll do my best to get back to you.
+          If you like my work, please reach out with any relavant opportunities.
+          I'm currently available for hire.
         </p>
         <Button border className="contact-b">
           <a href="mailto:jamesloganclark@gmail.com">Contact</a>

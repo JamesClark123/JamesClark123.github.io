@@ -45,26 +45,49 @@ const carbon: Experience = {
 const conscioux: Experience = {
   company: "CONSCIOUX",
   positionTitle: "Freelance Frontend Engineer",
-  timeAt: "APRIL 2019 - MAY 2019",
+  timeAt: "APRIL 2019 - MAY 2019, SUMMER 2018",
   techUsed: [Icons.React, Icons.Javascript, Icons.StyledComponents],
   info: [
     {
-      description: "Prototype and design pages for web applications",
+      description: "Prototype and design pages for company website",
+    },
+    {
+      description: "Handle deployments to the company's AWS S3 bucket",
     },
   ],
 }
 
-const consciouxIntern: Experience = {
-  company: "CONSCIOUX",
-  positionTitle: "Frontend Engineer Intern",
-  timeAt: "SUMMER 2018",
-  techUsed: [Icons.React, Icons.Javascript, Icons.StyledComponents],
+const hatchways: Experience = {
+  company: "HATCHWAYS",
+  positionTitle: "Coding Bootcamp",
+  timeAt: "SUMMER 2019",
+  techUsed: [
+    Icons.React,
+    Icons.Javascript,
+    Icons.Express,
+    Icons.MaterialUI,
+    Icons.MongoDB,
+    Icons.MobX,
+    Icons.Node,
+  ],
   info: [
     {
       description:
-        "Worked under the Iconsnical co-founder to help design company website and develop new components",
+        "Developed an Amazon price watching website within a month in a team of two",
+    },
+    {
+      description:
+        "Implemented the login, signin, and landing page as well as demo page for prospective users",
+    },
+    {
+      description:
+        "Integrated the SendGrid api so users can recieve emails when prices drop",
+    },
+    {
+      description:
+        "Helped design and implement a NoSQL database in the cloud with MongoDB Atlas",
     },
   ],
 }
 
-export default [carbon, conscioux, consciouxIntern]
+export default [carbon, hatchways, conscioux]
