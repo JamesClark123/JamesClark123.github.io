@@ -8,14 +8,18 @@ FullPage.propTypes = {
   className: PropTypes.string,
 }
 
-interface Props {
+interface Props extends React.ComponentProps<any> {
   children: React.ReactNode
   className?: string
 }
 
-function FullPage({ children, className }: Props) {
+function FullPage({ children, className, ...props }: Props) {
   const styles = "full-page " + className
-  return <div className={styles}>{children}</div>
+  return (
+    <div {...props} className={styles}>
+      {children}
+    </div>
+  )
 }
 
 export default FullPage

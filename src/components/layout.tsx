@@ -1,47 +1,40 @@
-/**
- * Layout component that queries for data
- * with Gatsby's useStaticQuery component
- *
- * See: https://www.gatsbyjs.org/docs/use-static-query/
- */
-
 import React from "react"
 import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
 
 import Header from "./header"
 import Footer from "./footer"
 
+import "../styles/layout.scss"
+
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
+  navOptions: PropTypes.node,
 }
-
-interface Props {
+interface Props extends React.ComponentProps<any> {
   children: React.ReactNode
+  navOptions?: JSX.Element | null
 }
 
-function Layout({ children }: Props) {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `)
+function Layout({ children, navOptions = null }: Props) {
+  // useEffect(() => {
+  //   let cov = document.getElementById("load-cover")
+  //   if (cov) cov.className += " visible"
+  // }, [])
 
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata.title} />
-      <div
+      {/* <div id="load-cover" className="hidden" /> */}
+      <Header navOptions={navOptions} />
+      {/* <div
         style={{
           margin: `0 auto`,
           width: "90%",
         }}
-      >
-        <main>{children}</main>
-      </div>
+      > */}
+      <main id="main" className="main-container">
+        {children}
+      </main>
+      {/* </div> */}
       <Footer />
     </>
   )

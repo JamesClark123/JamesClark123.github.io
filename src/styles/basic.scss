@@ -1,3 +1,76 @@
+@import "_colors";
+@import "_sizings";
+
+@import url("https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700");
+
+html {
+  font-family: "Sarabun", sans-serif;
+}
+
+h1,
+h2 {
+  font-weight: bolder;
+  letter-spacing: 3px;
+  color: $active;
+  text-align: center;
+}
+
+h3 {
+  font-weight: lighter;
+  font-size: 40px;
+}
+
+h4 {
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: 14px;
+  margin-bottom: 40px;
+}
+
+p,
+a,
+span {
+  font-weight: normal;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  line-height: 20px;
+}
+
+button {
+  font-family: "Sarabun", sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  letter-spacing: 3px;
+
+  @media only screen and (max-width: $max-screen-width) {
+    font-size: 10px;
+  }
+}
+
+html {
+  background: $primary;
+}
+
+html,
+body {
+  overscroll-behavior: none contain;
+}
+
 body {
   margin: 0px;
+}
+
+body,
+header {
+  background: linear-gradient(to right, #3a3a3b, #161617);
+}
+
+p,
+span,
+h2,
+h3,
+h4,
+h5,
+button {
+  color: white;
 }

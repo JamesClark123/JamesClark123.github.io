@@ -18,6 +18,10 @@ $aligns: (
   "b": baseline,
 );
 
+.flx-wrap {
+  flex-wrap: wrap;
+}
+
 @each $direction-name, $direction in $directions {
   .flx-#{$direction-name} {
     display: flex;

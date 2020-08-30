@@ -14,9 +14,11 @@ interface Props extends React.ComponentProps<any> {
   fileName: string
 }
 
-function Avatar({ fileName, className }: Props) {
+function Avatar({ fileName }: Props) {
   return (
-    <Image fileName={fileName} className={classNames("avatar", className)} />
+    <div className="bounding-box">
+      <Image className="avatar-image" fileName={fileName} />
+    </div>
   )
 }
 

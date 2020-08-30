@@ -1,3 +1,11 @@
 .footer {
-  height: 60px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-icon {
+  transition: 800ms ease-out;
+  position: fixed;
 }

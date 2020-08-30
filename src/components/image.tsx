@@ -22,14 +22,14 @@ interface Props extends React.ComponentProps<any> {
   fileName: string
 }
 
-function Image({ fileName, className }: Props) {
+function Image({ fileName, ...props }: Props) {
   const data = useStaticQuery(graphql`
     query {
       allImageSharp {
         edges {
           node {
             id
-            fluid(maxWidth: 400, maxHeight: 400) {
+            fluid(maxWidth: 1000, quality: 100) {
               originalName
               ...GatsbyImageSharpFluid
             }
@@ -45,7 +45,9 @@ function Image({ fileName, className }: Props) {
 
   if (!edge) return null
 
-  return <Img className={className} fluid={edge.node.fluid} />
+  return (
+    <Img {...props} style={{ position: "inherit" }} fluid={edge.node.fluid} />
+  )
 }
 
 export default Image
