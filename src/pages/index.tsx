@@ -65,7 +65,7 @@ function IndexPage() {
         <h1 className="featured-title">FEATURED PROJECTS</h1>
         <ProjectsGrid projects={projects} />
       </FullPage>
-      <FullPage id="contact" className="flx-col jc-c ai-c contact-page">
+      <FullPage id="contact" className="flx-col jc-c ai-c">
         <h1 className="contact">HIRE ME</h1>
         <p className="contact-p">
           If you like my work, please reach out with any relavant opportunities.

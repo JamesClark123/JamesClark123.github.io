@@ -4,6 +4,8 @@
 $height: 60px;
 
 .header-logo {
+  padding-left: 13px;
+
   @media only screen and (max-width: $max-screen-width) {
     padding-left: 10px;
   }
@@ -29,7 +31,6 @@ $height: 60px;
 
 .header-area {
   @extend .header-base;
-  overflow: hidden;
   z-index: 5;
 }
 
@@ -40,7 +41,7 @@ $height: 60px;
     position: absolute;
     flex-direction: column;
     width: 50vw;
-    top: 0;
+    top: 0px;
     right: -50vw;
     padding: $height 0 0 0;
     height: 100vh;

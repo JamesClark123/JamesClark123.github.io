@@ -29,10 +29,10 @@ function Header({ navOptions }: Props) {
 
   const handleScroll = useCallback(() => {
     if (lastVal.current < window.scrollY - 30) {
-      if (!state.hidden) setState({ ...state, hidden: true })
+      setState({ showHamburger: false, showOnMouse: false, hidden: true })
       lastVal.current = window.scrollY
     } else if (window.scrollY === 0 || lastVal.current >= window.scrollY + 60) {
-      if (state.hidden) setState({ ...state, hidden: false })
+      setState({ ...state, hidden: false })
       lastVal.current = window.scrollY
     }
   }, [state])
@@ -52,30 +52,42 @@ function Header({ navOptions }: Props) {
     event => {
       const navOptions = document.getElementById("nav-options")
       if (!navOptions?.contains(event.target)) {
-        setState({ ...state, showHamburger: false })
+        setState({ ...state, showOnMouse: false, showHamburger: false })
       }
     },
     [state]
   )
 
   useEffect(() => {
-    window.addEventListener("click", handleClickOut)
     window.addEventListener("scroll", handleScroll)
-    document
-      .getElementById("header-area")
-      ?.addEventListener("mouseover", handleEnter)
-    document
-      .getElementById("header-area")
-      ?.addEventListener("mouseout", handleLeave)
+    window.addEventListener("click", handleClickOut)
+    if (
+      !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      )
+    ) {
+      document
+        .getElementById("header-area")
+        ?.addEventListener("mouseover", handleEnter)
+      document
+        .getElementById("header-area")
+        ?.addEventListener("mouseout", handleLeave)
+    }
     return () => {
-      window.removeEventListener("click", handleClickOut)
       window.removeEventListener("scroll", handleScroll)
-      document
-        .getElementById("header-area")
-        ?.removeEventListener("mouseover", handleEnter)
-      document
-        .getElementById("header-area")
-        ?.removeEventListener("mouseout", handleLeave)
+      window.removeEventListener("click", handleClickOut)
+      if (
+        !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        )
+      ) {
+        document
+          .getElementById("header-area")
+          ?.removeEventListener("mouseover", handleEnter)
+        document
+          .getElementById("header-area")
+          ?.removeEventListener("mouseout", handleLeave)
+      }
     }
   }, [state])
 
@@ -88,7 +100,7 @@ function Header({ navOptions }: Props) {
           })}
           id="header"
         >
-          <Icon icon={Icons.Logo} className="pl-l header-logo" size="xlarge" />
+          <Icon icon={Icons.Logo} className="header-logo" size="xlarge" />
           <div id="nav-options" className="flx-row ai-c options-container">
             {navOptions &&
               React.cloneElement(navOptions, {
@@ -102,9 +114,9 @@ function Header({ navOptions }: Props) {
               className={classNames("hamburger", {
                 "hamburger-active": state.showHamburger,
               })}
-              onClick={() =>
+              onClick={() => {
                 setState({ ...state, showHamburger: !state.showHamburger })
-              }
+              }}
               icon={Icons.Hamburger}
               size="xlarge"
               hoverType="none"
