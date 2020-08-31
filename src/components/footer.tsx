@@ -74,7 +74,10 @@ function Footer() {
   }, [])
 
   function calcLeft(i: number) {
-    const screenWidth = document.body.scrollWidth
+    const screenWidth =
+      document.body.scrollWidth < document.body.clientWidth
+        ? document.body.scrollWidth
+        : document.body.clientWidth
     const offsetByIndex = i - Math.ceil((icons.length - 1) / 2)
     const bottomArea = getBottomOfPage() - getBottomCutOff()
     const areaOffScreen = getBottomOfWindow() - getBottomCutOff()
@@ -94,7 +97,10 @@ function Footer() {
     const distanceToCutoff = getBottomCutOff() - getBottomOfWindow()
     const ratioToCutoff =
       (distanceToCutoff / totalAboveCutoff) * window.innerHeight
-    const totalOffset = 20 + i * 40 + ratioToCutoff
+    const totalOffset = Math.min(
+      20 + i * 40 + ratioToCutoff,
+      window.innerHeight - 70 - 20 - 40 * (icons.length - 1 - i)
+    )
     return !state.onScreen
       ? "-30px"
       : state.bottom
