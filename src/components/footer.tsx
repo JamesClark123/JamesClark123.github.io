@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react"
 import classNames from "classnames"
 
+import { useIsMobile } from "../hooks"
 import Icon from "./icon"
 import { Icons } from "../types"
 
@@ -27,34 +28,36 @@ function Footer() {
     onScreen: false,
   })
 
+  const isMobile = useIsMobile()
+
   function isWideEnough() {
-    return window.innerWidth > 600
+    return window.innerWidth > 600 && !isMobile
   }
 
-  function getBottomOfWindow() {
+  // The pixel location of the bottom of screen relative total screen height
+  function bottomOfWindow() {
     return window.scrollY + window.innerHeight
   }
 
-  function getBottomOfPage() {
+  // The total height of the page content. Header isn't included since it uses absolute positioning
+  function totalPageHeight() {
     return (
       (document.getElementById("main")?.clientHeight || Infinity) +
       (document.getElementById("footer")?.clientHeight || Infinity)
     )
   }
 
-  function getBottomCutOff() {
+  // The pixel height where the footer transitions between position left and position bottom
+  function bottomCutOff() {
     return (
-      getBottomOfPage() - window.innerHeight * (isWideEnough() ? 0.35 : 0.1)
+      totalPageHeight() - window.innerHeight * (isWideEnough() ? 0.35 : 0.1)
     )
   }
 
   const checkBottom = useCallback(() => {
-    const bottomOfWindow = getBottomOfWindow()
-    const bottomCutOff = getBottomCutOff()
-
-    if (bottomOfWindow > bottomCutOff && isWideEnough()) {
+    if (bottomOfWindow() > bottomCutOff() && isWideEnough()) {
       setState({ onScreen: true, bottom: true })
-    } else if (bottomOfWindow > bottomCutOff) {
+    } else if (bottomOfWindow() > bottomCutOff()) {
       setState({ onScreen: true, bottom: true })
     } else if (isWideEnough()) {
       setState({ onScreen: true, bottom: false })
@@ -79,8 +82,8 @@ function Footer() {
         ? document.body.scrollWidth
         : document.body.clientWidth
     const offsetByIndex = i - Math.ceil((icons.length - 1) / 2)
-    const bottomArea = getBottomOfPage() - getBottomCutOff()
-    const areaOffScreen = getBottomOfWindow() - getBottomCutOff()
+    const bottomArea = totalPageHeight() - bottomCutOff()
+    const areaOffScreen = bottomOfWindow() - bottomCutOff()
     const offsetByRatio = isWideEnough()
       ? (((bottomArea - areaOffScreen) / bottomArea) * screenWidth) / 2
       : 0
@@ -93,8 +96,8 @@ function Footer() {
   }
 
   function calcBottom(i: number) {
-    const totalAboveCutoff = getBottomCutOff()
-    const distanceToCutoff = getBottomCutOff() - getBottomOfWindow()
+    const totalAboveCutoff = bottomCutOff()
+    const distanceToCutoff = bottomCutOff() - bottomOfWindow()
     const ratioToCutoff =
       (distanceToCutoff / totalAboveCutoff) * window.innerHeight
     const totalOffset = Math.min(

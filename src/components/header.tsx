@@ -2,6 +2,7 @@ import React, { useRef, useState, useCallback, useEffect } from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
 
+import { useIsMobile } from "../hooks"
 import Icon from "./icon"
 import { Icons } from "../types"
 
@@ -26,6 +27,7 @@ function Header({ navOptions }: Props) {
     showHamburger: false,
   })
   const lastVal = useRef(0)
+  const isMobile = useIsMobile()
 
   const handleScroll = useCallback(() => {
     if (lastVal.current < window.scrollY - 30) {
@@ -61,11 +63,7 @@ function Header({ navOptions }: Props) {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll)
     window.addEventListener("click", handleClickOut)
-    if (
-      !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      )
-    ) {
+    if (!isMobile) {
       document
         .getElementById("header-area")
         ?.addEventListener("mouseover", handleEnter)
@@ -76,11 +74,7 @@ function Header({ navOptions }: Props) {
     return () => {
       window.removeEventListener("scroll", handleScroll)
       window.removeEventListener("click", handleClickOut)
-      if (
-        !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent
-        )
-      ) {
+      if (!isMobile) {
         document
           .getElementById("header-area")
           ?.removeEventListener("mouseover", handleEnter)
@@ -91,40 +85,62 @@ function Header({ navOptions }: Props) {
     }
   }, [state])
 
+  useEffect(() => {
+    if (!window.sessionStorage.doneLoading) {
+      window.sessionStorage.doneLoading = true
+      setState({
+        hidden: false,
+        showOnMouse: false,
+        showHamburger: false,
+      })
+    }
+  }, [])
+
   return (
-    <>
-      <div className="header-area" id="header-area">
-        <header
-          className={classNames("flx-row jc-sb ai-c header p-s", {
-            hidden: state.hidden && !state.showOnMouse,
+    <div className="header-area" id="header-area">
+      <header
+        className={classNames("flx-row jc-fe ai-c header p-s", {
+          hidden: state.hidden && !state.showOnMouse,
+          "done-loading": window.sessionStorage.doneLoading,
+        })}
+        id="header"
+      >
+        <Icon
+          icon={Icons.Logo}
+          className={classNames("header-logo", {
+            "done-loading": window.sessionStorage.doneLoading,
+            "still-loading": !window.sessionStorage.doneLoading,
           })}
-          id="header"
+          size="xlarge"
+        />
+        <div
+          id="nav-options"
+          className={classNames("flx-row ai-c options-container", {
+            "done-loading": window.sessionStorage.doneLoading,
+          })}
         >
-          <Icon icon={Icons.Logo} className="header-logo" size="xlarge" />
-          <div id="nav-options" className="flx-row ai-c options-container">
-            {navOptions &&
-              React.cloneElement(navOptions, {
-                className: classNames(
-                  "header-content",
-                  { visible: state.showHamburger },
-                  navOptions.props.className
-                ),
-              })}
-            <Icon
-              className={classNames("hamburger", {
-                "hamburger-active": state.showHamburger,
-              })}
-              onClick={() => {
-                setState({ ...state, showHamburger: !state.showHamburger })
-              }}
-              icon={Icons.Hamburger}
-              size="xlarge"
-              hoverType="none"
-            />
-          </div>
-        </header>
-      </div>
-    </>
+          {navOptions &&
+            React.cloneElement(navOptions, {
+              className: classNames(
+                "header-content",
+                { visible: state.showHamburger },
+                navOptions.props.className
+              ),
+            })}
+          <Icon
+            className={classNames("hamburger", {
+              "hamburger-active": state.showHamburger,
+            })}
+            onClick={() => {
+              setState({ ...state, showHamburger: !state.showHamburger })
+            }}
+            icon={Icons.Hamburger}
+            size="xlarge"
+            hoverType="none"
+          />
+        </div>
+      </header>
+    </div>
   )
 }
 

@@ -4,10 +4,27 @@
 $height: 60px;
 
 .header-logo {
-  padding-left: 13px;
+  transition: opacity 2000ms, width 2000ms 2000ms, height 2000ms 2000ms,
+    top 2000ms 2000ms, left 2000ms 2000ms, padding-left 2000ms 2000ms;
+  position: absolute;
+  opacity: 1;
 
-  @media only screen and (max-width: $max-screen-width) {
-    padding-left: 10px;
+  &.still-loading {
+    padding: 0;
+    opacity: 0;
+    width: 80px;
+    height: 80px;
+    left: calc(50vw - 40px);
+    top: calc(50vh - 40px);
+  }
+
+  &.done-loading {
+    left: 0;
+    padding-left: 25px;
+
+    @media only screen and (max-width: $max-screen-width) {
+      padding-left: 12px;
+    }
   }
 }
 
@@ -18,23 +35,30 @@ $height: 60px;
   top: 0;
   right: 0;
   left: 0;
+  max-width: 100vw;
+  z-index: 5;
 }
 
 .header {
   @extend .header-base;
-  transition: all 1200ms;
+  transition: all 2000ms 2000ms, top 1200ms;
+  height: 100vh;
 
   &.hidden {
     top: calc(-#{$height} * 2);
+  }
+
+  &.done-loading {
+    height: $height;
   }
 }
 
 .header-area {
   @extend .header-base;
-  z-index: 5;
 }
 
 .header-content {
+  transition: 1200ms;
   z-index: 5;
 
   @media only screen and (max-width: $max-screen-width) {
@@ -56,7 +80,12 @@ $height: 60px;
 }
 
 .options-container {
-  transition: 800ms;
+  transition: opacity 2000ms 3000ms;
+  opacity: 0;
+
+  &.done-loading {
+    opacity: 1;
+  }
 }
 
 .hamburger {
