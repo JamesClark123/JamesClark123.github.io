@@ -30,7 +30,7 @@ function Header({ navOptions }: Props) {
   const isMobile = useIsMobile()
 
   const handleScroll = useCallback(() => {
-    if (document.getElementById("header")?.clientHeight || 0 > 65) {
+    if ((document.getElementById("header")?.clientHeight || 0) > 65) {
       return
     }
     if (lastVal.current < window.scrollY - 30) {
