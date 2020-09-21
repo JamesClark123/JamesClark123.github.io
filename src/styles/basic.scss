@@ -74,3 +74,17 @@ h5,
 button {
   color: white;
 }
+
+.loading-cover {
+  transition: opacity 500ms, height 0 500ms;
+  background: linear-gradient(to right, #3a3a3b, #161617);
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+  position: fixed;
+
+  &.hidden {
+    opacity: 0;
+    height: 0;
+  }
+}

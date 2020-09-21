@@ -2,10 +2,15 @@
 @import "_colors";
 
 $height: 60px;
+$loadingTransition: 2500ms;
 
 .header-logo {
-  transition: opacity 2000ms, width 2000ms 2000ms, height 2000ms 2000ms,
-    top 2000ms 2000ms, left 2000ms 2000ms, padding-left 2000ms 2000ms;
+  transition: opacity $loadingTransition, filter 800ms,
+    width $loadingTransition $loadingTransition,
+    height $loadingTransition $loadingTransition,
+    top $loadingTransition $loadingTransition,
+    left $loadingTransition $loadingTransition,
+    padding-left $loadingTransition $loadingTransition;
   position: absolute;
   opacity: 1;
 
@@ -41,7 +46,7 @@ $height: 60px;
 
 .header {
   @extend .header-base;
-  transition: all 2000ms 2000ms, top 1200ms;
+  transition: all $loadingTransition $loadingTransition, top 1200ms;
   height: 100vh;
 
   &.hidden {
@@ -80,7 +85,7 @@ $height: 60px;
 }
 
 .options-container {
-  transition: opacity 2000ms 3000ms;
+  transition: opacity $loadingTransition 3500ms;
   opacity: 0;
 
   &.done-loading {

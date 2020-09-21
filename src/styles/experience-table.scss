@@ -2,21 +2,19 @@
 @import "_sizings";
 
 .filter-table {
-  --width: calc(80vw / 3);
-  --max-width: 90vw;
-  --min-width: 90px;
-  --current-width: max(min(var(--width), var(--max-width)), var(--min-width));
-
-  // width: 80vw;
+  transition: height 1200ms;
+  --table-width: 80vw;
+  --max-table-width: 80vw;
+  --min-table-width: 270px;
 
   .tab-buttons {
     position: relative;
     display: flex;
 
     .button {
-      width: var(--width);
-      max-width: var(--max-width);
-      min-width: var(--min-width);
+      width: calc(var(--table-width) / 3);
+      max-width: calc(var(--max-table-width) / 3);
+      min-width: calc(var(--min-table-width) / 3);
       height: 40px;
     }
 
@@ -52,6 +50,9 @@
     position: relative;
     overflow: hidden;
     transition: 800ms;
+    width: var(--table-width);
+    max-width: var(--max-table-width);
+    min-width: var(--min-table-width);
 
     .experience-card {
       position: absolute;
@@ -60,6 +61,7 @@
 
       .bullet {
         overflow: scroll;
+        scrollbar-width: none;
 
         &::-webkit-scrollbar {
           display: none;

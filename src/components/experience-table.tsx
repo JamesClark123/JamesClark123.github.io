@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react"
+import React, { useState, useEffect, useCallback, useLayoutEffect } from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
 
@@ -52,16 +52,37 @@ interface Props extends React.ComponentProps<any> {
 }
 
 function ExperienceTable({ experience, ...props }: Props) {
-  const [state, _setState] = useState({ selected: 0, firstLoad: false })
+  const [state, setState] = useState({
+    selected: 0,
+    selectedHeight: 0,
+    maxHeight: 0,
+  })
 
-  function setState(property: string, value: any) {
-    return () => {
-      _setState({ ...state, [property]: value })
-    }
+  function getHeights() {
+    const height =
+      document.getElementById(`experience-card-${state.selected}`)
+        ?.clientHeight || 0
+    const tableButtonHeight =
+      (document.getElementById(`table-buttons`)?.clientHeight || 0) + 30
+    const downloadButtonHeight =
+      document.getElementById(`experience-download`)?.clientHeight || 0
+    const maxExperienceHeight = experience.reduce((largest, _xp, i) => {
+      let height =
+        document.getElementById(`experience-card-${i}`)?.clientHeight || 0
+      return height > largest ? height : largest
+    }, 0)
+    const maxHeight =
+      tableButtonHeight + downloadButtonHeight + maxExperienceHeight
+    return { height, maxHeight }
   }
 
   const calcOnScreenChange = useCallback(() => {
-    _setState({ ...state, firstLoad: !state.firstLoad })
+    const { height, maxHeight } = getHeights()
+    setState({
+      ...state,
+      maxHeight: maxHeight,
+      selectedHeight: height,
+    })
   }, [state])
 
   useEffect(() => {
@@ -69,10 +90,15 @@ function ExperienceTable({ experience, ...props }: Props) {
     return () => window.removeEventListener("resize", calcOnScreenChange)
   }, [calcOnScreenChange])
 
-  // This is a hacky work around
-  useEffect(() => {
-    _setState({ ...state, firstLoad: true })
-  }, [])
+  useLayoutEffect(() => {
+    const { height, maxHeight } = getHeights()
+    if (
+      state.selectedHeight === 0 ||
+      state.selectedHeight !== height ||
+      state.maxHeight !== maxHeight
+    )
+      setState({ ...state, maxHeight: maxHeight, selectedHeight: height })
+  }, [state])
 
   function tabButtons() {
     return (
@@ -83,7 +109,14 @@ function ExperienceTable({ experience, ...props }: Props) {
               <button
                 key={i}
                 className="filter-button"
-                onClick={setState("selected", i)}
+                onClick={() => {
+                  const { height } = getHeights()
+                  setState({
+                    ...state,
+                    selectedHeight: height,
+                    selected: i,
+                  })
+                }}
               >
                 {xp.company}
               </button>
@@ -92,8 +125,8 @@ function ExperienceTable({ experience, ...props }: Props) {
           <span
             className="highlight-tab"
             style={{
-              left: `calc(
-            var(--current-width) * ${state.selected}
+              left: `calc(calc(
+            var(--table-width) / 3) * ${state.selected}
           )`,
             }}
           />
@@ -103,14 +136,11 @@ function ExperienceTable({ experience, ...props }: Props) {
   }
 
   function makeExperienceCards() {
-    const height = document.getElementById(`experience-card-${state.selected}`)
-      ?.clientHeight
     return (
       <div
         className="experience-card-container flx-row"
         style={{
-          width: `calc(var(--current-width) * ${experience.length})`,
-          height: height,
+          height: state.selectedHeight,
         }}
       >
         {experience.map((xp, i) => (
@@ -120,7 +150,7 @@ function ExperienceTable({ experience, ...props }: Props) {
             experience={xp}
             className="experience-card flx-col"
             style={{
-              left: `calc(calc(var(--current-width) * ${experience.length}) * calc(${i} - ${state.selected}))`,
+              left: `calc(var(--table-width) * calc(${i} - ${state.selected}))`,
               opacity: i === state.selected ? "1" : "0",
             }}
           />
@@ -129,26 +159,13 @@ function ExperienceTable({ experience, ...props }: Props) {
     )
   }
 
-  function getMaxHeight() {
-    const tableButtonHeight =
-      (document.getElementById(`table-buttons`)?.clientHeight || 0) + 30
-    const downloadButtonHeight =
-      document.getElementById(`experience-download`)?.clientHeight || 0
-    return experience.reduce((largest, _xp, i) => {
-      let height =
-        document.getElementById(`experience-card-${i}`)?.clientHeight || 0
-      height += tableButtonHeight + downloadButtonHeight
-      return height > largest ? height : largest
-    }, 0)
-  }
-
   // If this is to be made generic the component can take in children then clone the children with the refs and keys attached
   // This would allow this table to be used for any type of data display - call it Filter Table
   return (
     <div
       {...props}
       className={classNames(props.className, "filter-table flx-col ai-b")}
-      style={{ height: getMaxHeight() }}
+      style={{ height: state.maxHeight }}
     >
       {tabButtons()}
       {makeExperienceCards()}

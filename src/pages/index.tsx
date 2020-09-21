@@ -36,6 +36,13 @@ function IndexPage() {
       document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
   }
 
+  function scrollToBottom() {
+    window.scrollTo({
+      top: document.body.scrollHeight - window.innerHeight,
+      behavior: "smooth",
+    })
+  }
+
   return (
     <Layout
       navOptions={
@@ -43,7 +50,7 @@ function IndexPage() {
           <Button onClick={scrollTo("home")} text="Home" />
           <Button onClick={scrollTo("experience")} text="Experience" />
           <Button onClick={scrollTo("projects")} text="Projects" />
-          <Button onClick={scrollTo("contact")} text="Contact" />
+          <Button onClick={scrollToBottom} text="Contact" />
           <Button border>
             <a href={require("../assets/James_Clark_Resume.pdf")} download>
               Resume

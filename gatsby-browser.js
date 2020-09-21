@@ -1,4 +1,4 @@
-//@ts-nocheck
+import React from "react"
 /**
  * Implement Gatsby's Browser APIs in this file.
  *
@@ -10,3 +10,12 @@
 import "./src/styles/alignments.scss"
 import "./src/styles/spacings.scss"
 import "./src/styles/basic.scss"
+
+export const wrapPageElement = ({ element, props }) => {
+  return (
+    <>
+      <div className="loading-cover" id="loading-cover" />
+      {element}
+    </>
+  )
+}
