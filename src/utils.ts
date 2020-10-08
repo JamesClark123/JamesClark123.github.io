@@ -15,8 +15,6 @@ export function isMobile(): boolean {
   )
 }
 
-// export typeof window !== undefined ?
-
 function getRandomNumber(range: number) {
   return Math.max(Math.floor(Math.random() * range), 1)
 }
