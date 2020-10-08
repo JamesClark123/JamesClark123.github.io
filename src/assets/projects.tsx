@@ -46,7 +46,7 @@ const algorithms: Project = {
   github: {
     icon: Icons.Github,
     link:
-      "https://github.com/JamesClark123/JamesClark123.github.io/tree/src/pages/algorithms.tsx",
+      "https://github.com/JamesClark123/JamesClark123.github.io/blob/source/src/pages/algorithms.tsx",
   },
   description:
     "Implementations of many common algorithms that can be run against each other. Beautifully displayed with Recharts.",
