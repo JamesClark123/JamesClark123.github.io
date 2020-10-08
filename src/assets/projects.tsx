@@ -19,7 +19,7 @@ const portfolio: Project = {
   title: "PORTFOLIO",
   github: {
     icon: Icons.Github,
-    link: "https://github.com/JamesClark123/Portfolio",
+    link: "https://github.com/JamesClark123/JamesClark123.github.io",
   },
   description:
     "This website! Designed by the superb designer (and my wife) Cindy Chen. Hope you like it :)",
@@ -37,4 +37,20 @@ const hamt: Project = {
   tech: [Icons.Ocaml],
 }
 
-export default [portfolio, dealsMate, hamt]
+const algorithms: Project = {
+  title: "ALGORITHMS",
+  externalLink: {
+    icon: Icons.ExternalLink,
+    link: "https://jamesclark123.github.io/algorithms",
+  },
+  github: {
+    icon: Icons.Github,
+    link:
+      "https://github.com/JamesClark123/JamesClark123.github.io/tree/src/pages/algorithms.tsx",
+  },
+  description:
+    "Implementations of many common algorithms that can be run against each other. Beautifully displayed with Recharts.",
+  tech: [Icons.TypeScript, Icons.React, Icons.Redux],
+}
+
+export default [portfolio, dealsMate, hamt, algorithms]

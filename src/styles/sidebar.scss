@@ -1,0 +1,36 @@
+.sidebar {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  height: calc(100vh - 60px);
+  width: 150px;
+  box-sizing: border-box;
+  padding: 0;
+  transition: left 800ms;
+
+  &.collapsable {
+    background: #161617;
+    opacity: 0.85;
+  }
+
+  &.hidden {
+    left: -150px;
+  }
+
+  & span {
+    color: white;
+  }
+}
+
+.sidebar-icon {
+  position: absolute;
+  top: 75px;
+  fill: white;
+  left: 10px;
+  width: 24px;
+  height: 24px;
+
+  &.hidden {
+    left: -24px;
+  }
+}

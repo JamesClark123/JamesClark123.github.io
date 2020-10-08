@@ -13,14 +13,26 @@
   transition: 800ms;
   user-select: none;
   cursor: pointer;
+  color: white;
 
-  & a {
-    color: black;
+  & * {
+    color: white;
     transition: 800ms;
+  }
+  &.inactive * {
+    color: grey;
   }
 
   &.border {
     background-color: $primary;
+
+    & * {
+      color: black;
+    }
+
+    &.inactive * {
+      color: grey;
+    }
   }
 
   &:focus {
@@ -30,6 +42,12 @@
 
   &:hover {
     background: $active;
+    color: black;
+
+    &.inactive {
+      color: grey;
+      background: none;
+    }
   }
 
   &:active {

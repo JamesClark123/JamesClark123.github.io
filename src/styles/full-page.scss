@@ -1,4 +1,12 @@
 .full-page {
   min-height: 100vh;
-  padding: 40px 0 0 0;
+  padding: 60px 0 0 0;
+
+  &.border-box {
+    box-sizing: border-box;
+  }
+
+  &.fixed-height {
+    height: 100vh;
+  }
 }

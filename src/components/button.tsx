@@ -8,24 +8,31 @@ Button.propTypes = {
   border: PropTypes.bool,
 }
 
-interface Props extends React.ComponentProps<any> {
+interface Props extends React.PropsWithoutRef<JSX.IntrinsicElements["div"]> {
   children?: React.ReactElement
-  onClick?: () => any
   border?: boolean
   text?: string
+  inactive?: boolean
 }
 
-function Button({
-  children,
-  className = "",
-  border = false,
-  text = "button",
-  ...props
-}: Props) {
+function Button(props: Props) {
+  const {
+    children,
+    className = "",
+    border = false,
+    text = "button",
+    inactive,
+    onClick,
+    ...rest
+  } = props
   return (
     <div
-      {...props}
-      className={classNames(className, "button", { border: border })}
+      {...rest}
+      onClick={inactive ? () => {} : onClick}
+      className={classNames(className, "button", {
+        border: border,
+        inactive: inactive,
+      })}
     >
       {children ? (
         React.Children.map(children, child =>

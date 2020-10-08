@@ -25,6 +25,7 @@ import LinkedIn from "../assets/icons/linkedin.svg"
 import Mail from "../assets/icons/mail.svg"
 import Logo from "../assets/icons/logo.svg"
 import Hamburger from "../assets/icons/hamburger.svg"
+import Redux from "../assets/icons/redux.svg"
 
 import "../styles/icon.scss"
 
@@ -127,6 +128,8 @@ function Icon({
         return make(Logo)
       case Icons.Hamburger:
         return make(Hamburger)
+      case Icons.Redux:
+        return make(Redux)
       default:
         return make(null)
     }

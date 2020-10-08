@@ -1,3 +1,4 @@
+import wrapRoot from "./wrap-root"
 /**
  * Implement Gatsby's SSR (Server Side Rendering) APIs in this file.
  *
@@ -5,3 +6,5 @@
  */
 
 // You can delete this file if you're not using it
+
+export const wrapRootElement = wrapRoot
