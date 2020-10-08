@@ -8,12 +8,14 @@ import {
 
 export function isMobile(): boolean {
   return (
-    typeof window !== undefined &&
+    typeof window !== "undefined" &&
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
       navigator.userAgent
     )
   )
 }
+
+// export typeof window !== undefined ?
 
 function getRandomNumber(range: number) {
   return Math.max(Math.floor(Math.random() * range), 1)
