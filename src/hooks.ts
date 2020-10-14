@@ -1,9 +1,18 @@
-import React, { useRef, useEffect } from "react"
+import React, { useRef, useEffect, useState } from "react"
 import _ from "lodash"
 
 import { isMobile } from "./utils"
 
 export function useIsMobile(): boolean {
+  const [mobile, setMobile] = useState(false)
+  const getCurrentMobile = useAlwaysUpdated(mobile)
+  const check = () => {
+    if (getCurrentMobile() !== isMobile()) setMobile(isMobile())
+  }
+  useEffect(() => {
+    check()
+    window.addEventListener("resize", check)
+  }, [])
   return isMobile()
 }
 
