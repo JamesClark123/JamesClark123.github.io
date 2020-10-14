@@ -24,7 +24,6 @@ function SideBar(props: Props) {
     (event: any) => {
       const sideBar = document.getElementById("sidebar")
       if (!sideBar?.contains(event.target) && !hidden) {
-        console.log("calling")
         setHidden(true)
       }
     },
