@@ -60,6 +60,7 @@ export enum Actions {
   RUN_ALGORITHMS,
   STEP_ALGORITHM,
   STOP_ALGORITHMS,
+  CONTINUE_ALGORITHMS,
 }
 
 export type Payloads = {
@@ -70,6 +71,7 @@ export type Payloads = {
   [Actions.RUN_ALGORITHMS]: null
   [Actions.STEP_ALGORITHM]: null
   [Actions.STOP_ALGORITHMS]: null
+  [Actions.CONTINUE_ALGORITHMS]: null
 }
 
 export type PayloadType = Payloads[keyof Payloads]
@@ -97,18 +99,27 @@ export interface SortingChartDataType {
   value: number
 }
 
-export type SortingChartableData = Array<SortingChartDataType>
+export interface SortingChartableData {
+  data: Array<SortingChartDataType>
+  auxData?: Array<SortingChartDataType>
+}
 
 export type ChartableData = SortingChartableData | null
 
 export enum SortingStepType {
   COMPARE,
   EXCHANGE,
+  COPY_TO_AUX,
+  COPY_FROM_AUX,
+  MAKE_AUX,
+  COMPARE_AUX,
 }
 
 export type SortingStep = {
   type: SortingStepType
   indicies: Array<number>
+  auxSize?: number
+  auxIndicies?: Array<number>
 } | null
 
 export type Steps = Array<SortingStep>
@@ -146,10 +157,12 @@ export enum SortClass {
   INSERTION_SORT,
   SHELL_SORT,
   QUICK_SORT,
+  HEAP_SORT,
+  MERGE_SORT,
 }
 
 export enum SearchClass {
-  SEQUENTIAL_SEARCH = 4,
+  SEQUENTIAL_SEARCH = SortClass["MERGE_SORT"] + 1,
 }
 
 export const AlgorithmType = { ...SortClass, ...SearchClass }
@@ -162,6 +175,8 @@ export function getAlgorithmClass(algo: AlgorithmType) {
     case AlgorithmType.INSERTION_SORT:
     case AlgorithmType.SHELL_SORT:
     case AlgorithmType.QUICK_SORT:
+    case AlgorithmType.HEAP_SORT:
+    case AlgorithmType.MERGE_SORT:
       return AlgorithmClass.SORT
     default:
       return AlgorithmClass.SEARCH
@@ -180,6 +195,10 @@ export function getAlgorithmName(algo: AlgorithmType) {
       return "Sequential Search"
     case AlgorithmType.QUICK_SORT:
       return "Quick Sort"
+    case AlgorithmType.HEAP_SORT:
+      return "Heap Sort"
+    case AlgorithmType.MERGE_SORT:
+      return "Merge Sort"
     default:
       return ""
   }

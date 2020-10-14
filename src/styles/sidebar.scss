@@ -1,20 +1,21 @@
 .sidebar {
-  position: absolute;
   top: 60px;
   left: 0;
   height: calc(100vh - 60px);
-  width: 150px;
+  width: 170px;
   box-sizing: border-box;
-  padding: 0;
+  padding: 0 15px 0 0;
   transition: left 800ms;
 
   &.collapsable {
     background: #161617;
+    position: absolute;
     opacity: 0.85;
+    padding: 0;
   }
 
   &.hidden {
-    left: -150px;
+    left: -170px;
   }
 
   & span {

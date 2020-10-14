@@ -11,6 +11,7 @@ import {
   ChartableData,
   AlgorithmType,
   SortingChartableData,
+  SortingChartDataType,
 } from "../types"
 import {
   selectionSort,
@@ -18,18 +19,24 @@ import {
   generateRandomIntArray,
   shellSort,
   quickSort,
+  heapSort,
+  mergeSort,
 } from "../utils"
 
 function runAlgorithm(data: ChartableData, algorithm: AlgorithmType) {
   switch (algorithm) {
     case AlgorithmType.SELECTION_SORT:
-      return selectionSort(data as SortingChartableData)
+      return selectionSort(data?.data as Array<SortingChartDataType>)
     case AlgorithmType.INSERTION_SORT:
-      return insertionSort(data as SortingChartableData)
+      return insertionSort(data?.data as Array<SortingChartDataType>)
     case AlgorithmType.SHELL_SORT:
-      return shellSort(data as SortingChartableData)
+      return shellSort(data?.data as Array<SortingChartDataType>)
     case AlgorithmType.QUICK_SORT:
-      return quickSort(data as SortingChartableData)
+      return quickSort(data?.data as Array<SortingChartDataType>)
+    case AlgorithmType.HEAP_SORT:
+      return heapSort(data?.data as Array<SortingChartDataType>)
+    case AlgorithmType.MERGE_SORT:
+      return mergeSort(data?.data as Array<SortingChartDataType>)
     default:
       return undefined
   }
@@ -37,12 +44,12 @@ function runAlgorithm(data: ChartableData, algorithm: AlgorithmType) {
 function createChartableData(
   type: AlgorithmClass | null,
   size: number
-): ChartableData {
+): Array<SortingChartDataType> {
   switch (type) {
     case AlgorithmClass.SORT:
       return generateRandomIntArray(size, size)
     default:
-      return null
+      return []
   }
 }
 
@@ -92,7 +99,9 @@ export function algorithms(
 
       originalData_ = originalData
       if (!originalData_)
-        originalData_ = createChartableData(currentClass_, maxChartSize)
+        originalData_ = {
+          data: createChartableData(currentClass_, maxChartSize),
+        }
 
       chartsData_.push(action.payload)
       mapToChartingData_[action.payload.id] = {
@@ -130,7 +139,7 @@ export function algorithms(
 
     case Actions.CREATE_NEW_CHARTABLE_DATA:
       mapToChartingData_ = {}
-      originalData_ = createChartableData(currentClass, maxChartSize)
+      originalData_ = { data: createChartableData(currentClass, maxChartSize) }
       for (let key in mapToChartingData) {
         mapToChartingData_[key] = { currentState: originalData_, steps: [] }
       }
@@ -160,8 +169,10 @@ export function algorithms(
       mapToChartingData_ = {}
       for (let key in mapToChartingData) {
         const value = mapToChartingData[key]
+        const { data, auxData } = value.currentState!
         let step = value.steps[currentStep]
-        let newArray = value.currentState?.slice()
+        let newArray = data.slice()
+        let newAux = auxData?.slice()
         if (!step || !newArray) {
           mapToChartingData_[key] = value
           continue
@@ -172,10 +183,40 @@ export function algorithms(
           newArray[index1] = newArray[index2]
           newArray[index2] = temp
           mapToChartingData_[key] = {
-            currentState: newArray,
+            currentState: { data: newArray, auxData: auxData },
             steps: value.steps,
           }
-        } else {
+        } else if (step.type === SortingStepType.COMPARE) {
+          mapToChartingData_[key] = value
+        } else if (step.type === SortingStepType.MAKE_AUX) {
+          mapToChartingData_[key] = {
+            currentState: {
+              data,
+              auxData: new Array<SortingChartDataType>(step.auxSize!).fill({
+                value: 0,
+              }),
+            },
+            steps: value.steps,
+          }
+        } else if (step.type === SortingStepType.COPY_TO_AUX) {
+          const [from] = step.indicies
+          const [to] = step.auxIndicies!
+          if (!newAux) continue
+          newAux[to] = data[from]
+          mapToChartingData_[key] = {
+            currentState: { data: data, auxData: newAux },
+            steps: value.steps,
+          }
+        } else if (step.type === SortingStepType.COPY_FROM_AUX) {
+          const [to] = step.indicies
+          const [from] = step.auxIndicies!
+          if (!auxData) continue
+          newArray[to] = auxData[from]
+          mapToChartingData_[key] = {
+            currentState: { data: newArray, auxData: auxData },
+            steps: value.steps,
+          }
+        } else if (step.type === SortingStepType.COMPARE_AUX) {
           mapToChartingData_[key] = value
         }
       }
@@ -189,6 +230,8 @@ export function algorithms(
       }
     case Actions.STOP_ALGORITHMS:
       return { ...state, running: false }
+    case Actions.CONTINUE_ALGORITHMS:
+      return { ...state, running: true }
     default:
       return state
   }

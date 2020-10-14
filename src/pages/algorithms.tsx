@@ -14,6 +14,7 @@ import {
   runAlgorithms,
   stepAlgorithm,
   stopAlgorithms,
+  contineuAlgorithms,
 } from "../redux/actions"
 import Layout from "../components/layout"
 import {
@@ -22,6 +23,9 @@ import {
   AlgorithmType,
   getAlgorithmName,
   SortClass,
+  SortingChartableData,
+  SortingChartDataType,
+  SortingStepType,
 } from "../types"
 import FullPage from "../components/full-page"
 import Button from "../components/button"
@@ -31,31 +35,102 @@ import CollapsableButton from "../components/collapsable-button"
 import "../styles/algorithms.scss"
 import { useAlwaysUpdated, useIsMobile } from "../hooks"
 
-const ChartContainer = React.forwardRef(
-  (
-    { children, className, ...props }: React.ComponentProps<"div">,
-    ref: any
-  ) => {
-    return (
-      <div
-        {...props}
-        ref={ref}
-        className={classNames("chart-container", className)}
-      >
-        {children}
-      </div>
-    )
+function colorFromType(type?: SortingStepType) {
+  switch (type) {
+    case SortingStepType.COMPARE:
+    case SortingStepType.COMPARE_AUX:
+      return "#b9a969"
+    case SortingStepType.EXCHANGE:
+    case SortingStepType.COPY_FROM_AUX:
+    case SortingStepType.COPY_TO_AUX:
+      return "green"
+    default:
+      return "#b9a969"
   }
-)
+}
+
+interface BaseSortingChartProps {
+  data: Array<SortingChartDataType>
+  type?: SortingStepType
+  label?: string
+  indicies?: Array<number>
+}
+
+function BaseSortingChart(props: BaseSortingChartProps) {
+  const { data, label, indicies, type } = props
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <BarChart data={data}>
+        {label && (
+          <XAxis dataKey="name" tick={false} tickLine={false} label={label} />
+        )}
+        <Bar dataKey="value" isAnimationActive={false}>
+          {data.map((_value, index) => {
+            let isIncluded = indicies && indicies.includes(index)
+            return (
+              <Cell
+                key={`cell-${index}`}
+                fill={isIncluded ? colorFromType(type) : "lightgrey"}
+              />
+            )
+          })}
+        </Bar>
+      </BarChart>
+    </ResponsiveContainer>
+  )
+}
+
+interface SortingChart {
+  chartData: ChartData
+  removeElement: (id: number) => void
+}
+
+function SortingChart(props: SortingChart) {
+  const { chartData, removeElement } = props
+  const { mapToChartingData, currentStep }: AlgorithmData = useSelector(
+    selectAlgorithmsData
+  )
+  const isMobile = useIsMobile()
+
+  const { currentState, steps } = mapToChartingData[chartData.id]
+  const { data, auxData } = currentState as SortingChartableData
+  const { indicies, auxIndicies, type } = steps[currentStep] || {}
+  if (!currentState || !steps || !data) return null
+
+  return (
+    <div
+      key={chartData.id}
+      className={classNames("chart-container", {
+        hidden: chartData.hidden || chartData.deleted,
+      })}
+      onTransitionEnd={() => removeElement(chartData.id)}
+    >
+      <BaseSortingChart
+        data={data}
+        label={
+          getAlgorithmName(chartData.type) +
+          (steps && steps.length && !isMobile
+            ? ` ~ ${steps.length} operations`
+            : "")
+        }
+        indicies={indicies}
+        type={type}
+      />
+      {auxData && (
+        <div className="aux-chart-container">
+          <BaseSortingChart data={auxData} indicies={auxIndicies} type={type} />
+        </div>
+      )}
+    </div>
+  )
+}
 
 function Charts() {
-  const {
-    chartsData,
-    mapToChartingData,
-    currentStep,
-  }: AlgorithmData = useSelector(selectAlgorithmsData, _.isEqual)
+  const { chartsData }: AlgorithmData = useSelector(
+    selectAlgorithmsData,
+    _.isEqual
+  )
   const dispatch = useDispatch()
-  const isMobile = useIsMobile()
 
   useEffect(() => {
     let found
@@ -76,48 +151,9 @@ function Charts() {
 
   return (
     <div className="flx-row jc-c ai-c charts">
-      {chartsData.map(chartData => {
-        const { currentState, steps } = mapToChartingData[chartData.id]
-        if (!currentState || !steps) return
-        return (
-          <ChartContainer
-            key={chartData.id}
-            className={chartData.hidden || chartData.deleted ? "hidden" : ""}
-            onTransitionEnd={() => removeElement(chartData.id)}
-          >
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={currentState}>
-                <XAxis
-                  dataKey="name"
-                  tick={false}
-                  tickLine={false}
-                  label={
-                    getAlgorithmName(chartData.type) +
-                    (steps && steps.length && !isMobile
-                      ? `: ${steps.length} compares & exchanges`
-                      : "")
-                  }
-                />
-                <Bar dataKey="value" isAnimationActive={false}>
-                  {currentState.map((_value, index) => {
-                    const indicies = steps[currentStep]?.indicies
-                    return (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={
-                          indicies && indicies.includes(index)
-                            ? "#b9a969"
-                            : "lightgrey"
-                        }
-                      />
-                    )
-                  })}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </ChartContainer>
-        )
-      })}
+      {chartsData.map(chartData => (
+        <SortingChart chartData={chartData} removeElement={removeElement} />
+      ))}
     </div>
   )
 }
@@ -149,7 +185,11 @@ function Controls(props: React.ComponentPropsWithoutRef<"div">) {
   }
 
   const runAlgorithm = () => {
-    dispatch(runAlgorithms())
+    if (currentStep === 0 || currentStep >= numberOfSteps) {
+      dispatch(runAlgorithms())
+    } else {
+      dispatch(contineuAlgorithms())
+    }
     setTimeout(algorithmStepper, 500)
   }
 
@@ -199,10 +239,15 @@ function Algorithms() {
       }
     >
       <FullPage className="flx-col jc-c ai-c" borderBox fixedHeight>
-        <div className="flx-col jc-fs ai-c algo-container">
-          <Controls className="flx-row jc-fs ai-c controls-container" />
-          <Charts />
+        <div
+          className={classNames("flx-row jc-fs ai-c algo-controls-container", {
+            mobile: isMobile,
+          })}
+        >
           <SideBar collapsable={isMobile}>
+            <div className="flx-col jc-c ai-c sidebar-title">
+              <span>Algorithms</span>
+            </div>
             <CollapsableButton buttonHeader="Sorting">
               {Object.keys(SortClass).map(value => {
                 if (isNaN(Number(value))) return null
@@ -217,6 +262,24 @@ function Algorithms() {
               })}
             </CollapsableButton>
           </SideBar>
+          <div className="flx-col jc-fs ai-c algo-container">
+            <Controls className="flx-row jc-fs ai-c controls-container" />
+            <Charts />
+            <div
+              className={classNames("flx-row jc-c ai-c color-legend", {
+                mobile: isMobile,
+              })}
+            >
+              <div className="flx-row ai-c jc-c">
+                <div className="red square" />
+                <span>Compares</span>
+              </div>
+              <div className="flx-row ai-c jc-c">
+                <div className="green square" />
+                <span>Copies or Exchanges</span>
+              </div>
+            </div>
+          </div>
         </div>
       </FullPage>
     </Layout>

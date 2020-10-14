@@ -45,3 +45,7 @@ export const stepAlgorithm = (): ReduxAction => {
 export const stopAlgorithms = (): ReduxAction => {
   return { type: Actions.STOP_ALGORITHMS, payload: null }
 }
+
+export const contineuAlgorithms = (): ReduxAction => {
+  return { type: Actions.CONTINUE_ALGORITHMS, payload: null }
+}

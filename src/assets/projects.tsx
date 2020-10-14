@@ -53,4 +53,4 @@ const algorithms: Project = {
   tech: [Icons.TypeScript, Icons.React, Icons.Redux],
 }
 
-export default [portfolio, dealsMate, hamt, algorithms]
+export default [portfolio, dealsMate, algorithms, hamt]
