@@ -10,7 +10,6 @@ import {
   ChartsData,
   ChartableData,
   AlgorithmType,
-  SortingChartableData,
   SortingChartDataType,
 } from "../types"
 import {
@@ -145,6 +144,7 @@ export function algorithms(
       }
       return {
         ...state,
+        currentStep: 0,
         mapToChartingData: mapToChartingData_,
         originalData: originalData_,
       }
