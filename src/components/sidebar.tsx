@@ -35,22 +35,22 @@ function SideBar(props: Props) {
     return () => window.removeEventListener("click", handleClickOut)
   }, [setHidden, hidden])
 
+  const sideBarIcon = classNames("sidebar-icon", {
+    hidden: !hidden || !collapsable,
+  })
+  const sideBar = classNames("flx-col ai-c jc-fs sidebar", {
+    hidden: hidden && collapsable,
+    collapsable: collapsable,
+  })
+
   return (
     <>
       <Icon
         icon={Icons.Hamburger}
-        className={classNames("sidebar-icon", {
-          hidden: !hidden || !collapsable,
-        })}
+        className={sideBarIcon}
         onClick={() => setHidden(!hidden)}
       />
-      <div
-        className={classNames("flx-col ai-c jc-fs sidebar", {
-          hidden: hidden && collapsable,
-          collapsable: collapsable,
-        })}
-        id="sidebar"
-      >
+      <div className={sideBar} id="sidebar">
         {children}
       </div>
     </>

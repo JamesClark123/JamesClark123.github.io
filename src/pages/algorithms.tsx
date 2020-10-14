@@ -227,6 +227,12 @@ function Algorithms() {
   const send = (algorithm: AlgorithmType) => () =>
     dispatch(addChartData(algorithm))
 
+  const colorLegend = classNames(
+    classNames("flx-row jc-c ai-c color-legend", {
+      mobile: isMobile,
+    })
+  )
+
   return (
     <Layout
       showFooter={false}
@@ -265,11 +271,7 @@ function Algorithms() {
           <div className="flx-col jc-fs ai-c algo-container">
             <Controls className="flx-row jc-fs ai-c controls-container" />
             <Charts />
-            <div
-              className={classNames("flx-row jc-c ai-c color-legend", {
-                mobile: isMobile,
-              })}
-            >
+            <div className={colorLegend}>
               <div className="flx-row ai-c jc-c">
                 <div className="red square" />
                 <span>Compares</span>
