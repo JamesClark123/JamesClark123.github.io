@@ -13,7 +13,7 @@ export function useIsMobile(): boolean {
     check()
     window.addEventListener("resize", check)
   }, [])
-  return isMobile()
+  return mobile
 }
 
 function deepCompareEquals(a: any, b: any) {
