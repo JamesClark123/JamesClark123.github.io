@@ -14,7 +14,7 @@ const icons = [
   },
   {
     icon: Icons.LinkedIn,
-    link: "www.linkedin.com/in/jamesclark123",
+    link: "https://www.linkedin.com/in/jamesclark123",
   },
   {
     icon: Icons.Mail,
@@ -118,7 +118,7 @@ function Footer() {
           <Icon
             key={i}
             icon={icon.icon}
-            target="_self"
+            target="_blank"
             link={icon.link}
             size="medium"
             hoverType="primary"
